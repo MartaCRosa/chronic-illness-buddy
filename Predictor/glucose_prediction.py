@@ -1,73 +1,82 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, classification_report, confusion_matrix
+from imblearn.over_sampling import SMOTE
 import matplotlib.pyplot as plt
-#import seaborn as sns
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-
-df = pd.read_csv("Predictor\Glucose_Level_Estimation.csv")
+data = pd.read_csv("Predictor\Glucose_Level_Estimation.csv")
 #Visualization of data
-#df.info()
+#data.info()
 
 # Check initial missing values
 print("Initial missing values per column:")
-print(df.isnull().sum())
+print(data.isnull().sum())
+print(data.shape)
 
-""""
-# 2. Create Target Column
-def create_glucose_category(df):
-    conditions = [
-        df['GLUCOSE_LEVEL'] < 70,
-        (df['GLUCOSE_LEVEL'] >= 70) & (df['GLUCOSE_LEVEL'] <= 140),
-        df['GLUCOSE_LEVEL'] > 140
-    ]
-    categories = [0, 1, 2]  # 0: Hypoglycemia, 1: Normal, 2: Hyperglycemia
-    df['GLUCOSE_CATEGORY'] = np.select(conditions, categories)
+# Pre-Processing
+def preprocess_data(df):  
+    df = df.drop(columns=['NIR_Reading', 'HR_IR'])  # Drop irrelevant columns
+    #df = df[df['DIABETIC'] == 'Y']  # Filter for diabetic patients only    
+    #df = df.drop(columns=['DIABETIC'])  # Not needed as a label
+    df = df.dropna(subset=['WEIGHT', 'HEIGHT']) # Drop rows with missing values in critical columns   
+    df['HEARTRATE'] = df['HEARTRATE'].fillna(df['HEARTRATE'].median()) # Fill missing values in numerical columns with median
     return df
 
-data = create_glucose_category(data)
+data = preprocess_data(data)
 
-# 3. Preprocess Dataset
-def preprocess_data(df):
-    # Drop irrelevant features (adjust based on your dataset)
-    X = df.drop(columns=['GLUCOSE_LEVEL', 'GLUCOSE_CATEGORY'])
-    y = df['GLUCOSE_CATEGORY']
+print("\nMissing values:")
+print(data.isnull().sum())
+print(data.shape)
 
-    # One-Hot Encode categorical columns
-    X = pd.get_dummies(X, columns=['GENDER', 'SKIN_COLOR', 'DIABETIC'], drop_first=True)
+# Split Features and Target
+X = data.drop(columns=['GLUCOSE_LEVEL'])
+y = data['GLUCOSE_LEVEL']
 
-    return X, y
+# One-Hot Encode categorical columns
+X = pd.get_dummies(X, columns=['GENDER', 'SKIN_COLOR', 'DIABETIC'], drop_first=True)
 
-X, y = preprocess_data(data)
+# Train/Test/Validation Split
+X_temp, X_test, y_temp, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.2, random_state=42)
 
-# 4. Train/Test Split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Train Model Linear Regression
+model = LinearRegression()
+model.fit(X_train, y_train)
 
-# 5. Model Training
-clf = RandomForestClassifier(random_state=42)
-clf.fit(X_train, y_train)
+# 6. Model Evaluation on Validation Set
+y_val_pred = model.predict(X_val)
+print("Validation MSE:", mean_squared_error(y_val, y_val_pred))
 
-# 6. Model Evaluation
-y_pred = clf.predict(X_test)
-print("Classification Report:\n", classification_report(y_test, y_pred))
-print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
+# 7. Classification of Predicted Glucose Levels
+def classify_glucose_levels(predictions):
+    categories = []
+    for value in predictions:
+        if value < 70:
+            categories.append(0)  # Hypoglycemia
+        elif 70 <= value <= 140:
+            categories.append(1)  # Normal
+        else:
+            categories.append(2)  # Hyperglycemia
+    return categories
 
-# Feature Importance Visualization
-plt.figure(figsize=(10, 6))
-importance = clf.feature_importances_
-#sns.barplot(x=importance, y=X.columns)
-plt.title("Feature Importance")
-plt.show()
+y_test_pred = model.predict(X_test)
+y_test_classes = classify_glucose_levels(y_test_pred)
 
-# 7. Save Model
-import joblib
-joblib.dump(clf, "glucose_prediction_model.pkl")
+# 8. Evaluation
+actual_classes = classify_glucose_levels(y_test)
+print("Classification Report:\n", classification_report(actual_classes, y_test_classes))
+print("Confusion Matrix:\n", confusion_matrix(actual_classes, y_test_classes))
 
-# 8. Load Model for Prediction (Optional)
-# loaded_model = joblib.load("glucose_prediction_model.pkl")
+# 9. Save Model
+#import joblib
+#joblib.dump(model, "glucose_prediction_linear_model.pkl")
+
+# Optional: Predict on a new example
 # example_input = X_test.iloc[0:1]
-# prediction = loaded_model.predict(example_input)
-# print("Prediction:", prediction)
-"""
+# prediction = model.predict(example_input)
+# print("Predicted Glucose Level:", prediction)
+# print("Classification:", classify_glucose_levels(prediction))"""
