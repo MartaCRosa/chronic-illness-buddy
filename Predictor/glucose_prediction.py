@@ -7,6 +7,7 @@ from imblearn.over_sampling import SMOTE
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.pyplot as plt
+from model import create_model
 
 data = pd.read_csv("Predictor\Glucose_Level_Estimation.csv")
 #Visualization of data
@@ -19,7 +20,7 @@ print(data.shape)
 
 # Pre-Processing
 def preprocess_data(df):  
-    df = df.drop(columns=['NIR_Reading', 'HR_IR'])  # Drop irrelevant columns
+    df = df.drop(columns=['NIR_Reading', 'HR_IR','SKIN_COLOR'])  # Drop irrelevant columns
     #df = df[df['DIABETIC'] == 'Y']  # Filter for diabetic patients only    
     #df = df.drop(columns=['DIABETIC'])  # Not needed as a label
     df = df.dropna(subset=['WEIGHT', 'HEIGHT']) # Drop rows with missing values in critical columns   
@@ -37,7 +38,7 @@ X = data.drop(columns=['GLUCOSE_LEVEL'])
 y = data['GLUCOSE_LEVEL']
 
 # One-Hot Encode categorical columns
-X = pd.get_dummies(X, columns=['GENDER', 'SKIN_COLOR', 'DIABETIC'], drop_first=True)
+X = pd.get_dummies(X, columns=['GENDER', 'DIABETIC'], drop_first=True)
 
 # Train/Test/Validation Split
 X_temp, X_test, y_temp, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -51,9 +52,13 @@ model.fit(X_train, y_train)
 y_val_pred = model.predict(X_val)
 print("Validation MSE:", mean_squared_error(y_val, y_val_pred))
 
+#fasting: 80 and 130 mg/dL
+#2 hours after meals: <180 mg/dL
+
 # 7. Classification of Predicted Glucose Levels
 def classify_glucose_levels(predictions):
     categories = []
+    count = 0
     for value in predictions:
         if value < 70:
             categories.append(0)  # Hypoglycemia
@@ -62,6 +67,7 @@ def classify_glucose_levels(predictions):
         else:
             categories.append(2)  # Hyperglycemia
     return categories
+
 
 y_test_pred = model.predict(X_test)
 y_test_classes = classify_glucose_levels(y_test_pred)
