@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        .chat-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .message {
+            margin: 10px 0;
+        }
+        .user-message {
+            text-align: right;
+            color: blue;
+        }
+        .bot-message {
+            text-align: left;
+            color: green;
+        }
+        textarea {
+            width: 100%;
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+    </nav>
+    <div class="chat-container">
+        <h1>Chatbot</h1>
+        <div id="chat-box">
+            {% for msg in conversation %}
+                <div class="message {{ 'user-message' if msg.sender == 'User' else 'bot-message' }}">
+                    <strong>{{ msg.sender }}:</strong> {{ msg.message }}
+                </div>
+            {% endfor %}
+        </div>
+        <form method="POST" action="/chatbot">
+            <textarea id="user_input" name="user_input" placeholder="Type your message here"></textarea><br><br>
+            <button type="submit">Send</button>
+        </form>
+        <form method="POST" action="/clear_chat" style="margin-top: 10px;">
+            <button type="submit">New Chat</button>
+        </form>
+    </div>
+</body>
+</html>

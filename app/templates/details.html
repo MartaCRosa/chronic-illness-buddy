@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+    </nav>
+
+    <!-- Display error messages if any validation errors occurred -->
+    {% if errors %}
+        <div style="color: red; margin-bottom: 20px;">
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <div class="form-container">
+        <h1>Health Questionnaire</h1>
+        <form method="POST" action="/details">
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" min="1" max="120" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="weight">Weight:</label>
+                <input type="number" id="weight" name="weight" min="20" max="200" required>
+            </div>
+            <div class="form-group">
+                <label for="height">Height:</label>
+                <input type="number" step="0.01" id="height" name="height" min="100" max="259" required>
+            </div>
+            <div class="form-group">
+                <label for="heart_rate">Heart Rate:</label>
+                <input type="number" id="heart_rate" name="heart_rate" min="20" max="200" required>
+            </div>
+
+            <!-- Last Eaten Field with Hours and Minutes -->
+            <div class="form-group">
+                <label for="last_eaten">Last Eaten:</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <!-- Hours Dropdown (0 to 8) -->
+                    <select id="last_eaten_hours" name="last_eaten_hours" required>
+                        {% for i in range(0, 9) %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <span>hours</span>
+
+                    <!-- Minutes Dropdown (0, 15, 30, 45) -->
+                    <select id="last_eaten_minutes" name="last_eaten_minutes" required>
+                        <option value="0">00</option>
+                        <option value="0.25">15</option>
+                        <option value="0.5">30</option>
+                        <option value="0.75">45</option>
+                    </select>
+                    <span>minutes</span>
+                </div>
+            </div>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
