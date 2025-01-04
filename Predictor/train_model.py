@@ -3,11 +3,12 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.utils import to_categorical # type: ignore
+from tensorflow.keras.callbacks import EarlyStopping # type: ignore
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import train_test_split
 from model import create_model
+from glucose_prediction import classify_glucose
 
 # Load and Preprocess Data
 data = pd.read_csv("Predictor/Glucose_Level_Estimation.csv")
@@ -20,26 +21,7 @@ def preprocess_data(df):
 
 data = preprocess_data(data)
 
-# Classify Glucose Levels
-def classify_glucose_by_eating(last_eaten, glucose_level):
-    if last_eaten == -1:  # Fasting
-        if glucose_level > 130:
-            return "Hyperglycemia"
-        elif 80 <= glucose_level <= 130:
-            return "Normal"
-        else:
-            return "Hypoglycemia"
-    elif last_eaten >= 0:  # Between 0 and 2 hours after eating
-        if glucose_level > 180:
-            return "Hyperglycemia"
-        elif 80 <= glucose_level <= 180:
-            return "Normal"
-        else:
-            return "Hypoglycemia"
-    else:
-        return "Unknown"
-
-data['CLASS'] = data.apply(lambda row: classify_glucose_by_eating(row['LAST_EATEN'], row['GLUCOSE_LEVEL']), axis=1)
+data['CLASS'] = data.apply(lambda row: classify_glucose(row['LAST_EATEN'], row['GLUCOSE_LEVEL']), axis=1)
 data = data[data['CLASS'] != 'Unknown']  # Remove rows with 'Unknown' classification
 y = data['CLASS']
 X = data.drop(columns=['GLUCOSE_LEVEL', 'CLASS'])
@@ -71,14 +53,14 @@ y_test_cat = to_categorical(y_test, num_classes=output_dim)
 # Early Stopping Callback
 early_stopping = EarlyStopping(
     monitor='val_loss',  # Monitor the validation loss
-    patience=10,          # Stop after 5 epochs with no improvement
+    patience=10,          # Stop after x epochs with no improvement
     restore_best_weights=True  # Revert to the best model weights
 )
 
 history = model.fit(
     X_train, y_train_cat,
     validation_data=(X_val, y_val_cat),
-    epochs=400,
+    epochs=700,
     batch_size=128,
     verbose=1,
     callbacks=[early_stopping]
