@@ -1,14 +1,15 @@
 from tensorflow.keras.models import Sequential # type: ignore
-from tensorflow.keras.layers import Dense, Dropout, BatchNormalization # type: ignore
-from tensorflow.keras.optimizers import Adam # type: ignore
-from tensorflow.keras.regularizers import l2 # type: ignore
+from tensorflow.keras.layers import Dense, Dropout # type: ignore
+from tensorflow.keras.optimizers import Adam # type: ignore 
 
 def create_model(input_dim, output_dim):
     model = Sequential([
         Dense(128, activation='relu', input_dim=input_dim),
         Dropout(0.4),
         Dense(64, activation='relu'),
+        Dropout(0.3),
         Dense(32, activation='relu'),
+        Dropout(0.2),
         Dense(output_dim, activation='softmax')
     ])
 
