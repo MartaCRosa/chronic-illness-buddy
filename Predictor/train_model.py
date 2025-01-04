@@ -53,14 +53,14 @@ y_test_cat = to_categorical(y_test, num_classes=output_dim)
 # Early Stopping Callback
 early_stopping = EarlyStopping(
     monitor='val_loss',  # Monitor the validation loss
-    patience=10,          # Stop after x epochs with no improvement
+    patience=10,          # Stop after 5 epochs with no improvement
     restore_best_weights=True  # Revert to the best model weights
 )
 
 history = model.fit(
     X_train, y_train_cat,
     validation_data=(X_val, y_val_cat),
-    epochs=700,
+    epochs=400,
     batch_size=128,
     verbose=1,
     callbacks=[early_stopping]

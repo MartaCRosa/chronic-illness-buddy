@@ -5,23 +5,11 @@ from tensorflow.keras.regularizers import l2 # type: ignore
 
 def create_model(input_dim, output_dim):
     model = Sequential([
-        # Input Layer
-        Dense(128, activation='relu', input_dim=input_dim, kernel_regularizer=l2(0.01)),
-        BatchNormalization(),  # Apply Batch Normalization after Dense layer
-        Dropout(0.4),  # Dropout layer for regularization
-        
-        # Hidden Layer 1
-        Dense(64, activation='relu', kernel_regularizer=l2(0.01)),
-        BatchNormalization(),
-        Dropout(0.3),
-        
-        # Hidden Layer 2
-        Dense(32, activation='relu', kernel_regularizer=l2(0.01)),
-        BatchNormalization(),
-        Dropout(0.2),
-        
-        # Output Layer
-        Dense(output_dim, activation='softmax')  # No Batch Normalization here
+        Dense(128, activation='relu', input_dim=input_dim),
+        Dropout(0.4),
+        Dense(64, activation='relu'),
+        Dense(32, activation='relu'),
+        Dense(output_dim, activation='softmax')
     ])
 
     model.compile(
