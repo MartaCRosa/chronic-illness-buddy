@@ -141,8 +141,8 @@ plt.xlabel('Predicted Class')
 plt.show()
 
 # Save Model and Scaler
-model.save("glucose_model.h5")
-np.save("scaler.npy", scaler.mean_)
-np.save("scaler_std.npy", scaler.scale_)
-with open("label_encoder_classes.npy", "wb") as f:
+model.save("Predictor\Model\glucose_model.h5")
+np.save("Predictor\Model\scaler.npy", scaler.mean_)
+np.save("Predictor\Model\scaler_std.npy", scaler.scale_)
+with open("Predictor\Model\label_encoder_classes.npy", "wb") as f:
     np.save(f, label_encoder.classes_)

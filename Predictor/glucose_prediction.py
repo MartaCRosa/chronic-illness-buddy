@@ -3,10 +3,10 @@ import pandas as pd
 from tensorflow.keras.models import load_model # type: ignore
 
 # Load Trained Model and Preprocessing Tools
-model = load_model("glucose_model.h5")
-scaler_mean = np.load("scaler.npy")
-scaler_std = np.load("scaler_std.npy")
-label_encoder_classes = np.load("label_encoder_classes.npy", allow_pickle=True)
+model = load_model("Predictor\Model\glucose_model.h5")
+scaler_mean = np.load("Predictor\Model\scaler.npy")
+scaler_std = np.load("Predictor\Model\scaler_std.npy")
+label_encoder_classes = np.load("Predictor\Model\label_encoder_classes.npy", allow_pickle=True)
 
 # Feature Preprocessing Function
 def preprocess_features(age, gender, weight, heartrate, height, last_eaten, diabetic):
