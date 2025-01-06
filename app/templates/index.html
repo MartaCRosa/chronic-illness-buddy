@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Google Fonts Option -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -14,12 +16,16 @@
         </div>
         <!-- Centered buttons -->
         <div class="button-container">
-            <div class="btn">
-                <a href="/details">Enter your details</a>
-            </div>
-            <div class="btn">
-                <a href="/chatbot">Chatbot buddy</a>
-            </div>
+            <a href="/details">
+                <div class="btn">
+                    Enter your Details
+                </div>
+            </a>
+            <a href="/chatbot">
+                <div class="btn">
+                    Chatbot Buddy
+                </div>
+            </a>
         </div>
     </div>
 </body>
