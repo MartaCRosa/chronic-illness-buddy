@@ -35,6 +35,13 @@
         button:hover {
             background-color: #45a049;
         }
+        .summary {
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #e9f7e9;
+        }
     </style>
 </head>
 <body>
@@ -53,58 +60,67 @@
         </div>
     {% endif %}
 
-    <div class="form-container">
-        <h1>Health Questionnaire</h1>
-        <form method="POST" action="/details">
-            <div class="form-group">
-                <label for="age">Age:</label>
-                <input type="number" id="age" name="age" min="1" max="120" required>
-            </div>
-            <div class="form-group">
-                <label for="gender">Gender:</label>
-                <select id="gender" name="gender" required>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="weight">Weight:</label>
-                <input type="number" id="weight" name="weight" min="20" max="200" required>
-            </div>
-            <div class="form-group">
-                <label for="height">Height:</label>
-                <input type="number" step="0.01" id="height" name="height" min="100" max="259" required>
-            </div>
-            <div class="form-group">
-                <label for="heart_rate">Heart Rate:</label>
-                <input type="number" id="heart_rate" name="heart_rate" min="20" max="200" required>
-            </div>
-
-            <!-- Last Eaten Field with Hours and Minutes -->
-            <div class="form-group">
-                <label for="last_eaten">Last Eaten:</label>
-                <div style="display: flex; justify-content: space-between;">
-                    <!-- Hours Dropdown (0 to 8) -->
-                    <select id="last_eaten_hours" name="last_eaten_hours" required>
-                        {% for i in range(0, 9) %}
-                            <option value="{{ i }}">{{ i }}</option>
-                        {% endfor %}
-                    </select>
-                    <span>hours</span>
-
-                    <!-- Minutes Dropdown (0, 15, 30, 45) -->
-                    <select id="last_eaten_minutes" name="last_eaten_minutes" required>
-                        <option value="0">00</option>
-                        <option value="0.25">15</option>
-                        <option value="0.5">30</option>
-                        <option value="0.75">45</option>
-                    </select>
-                    <span>minutes</span>
+    {% if user_data %}
+        <!-- Show User's Submitted Data -->
+        <div class="summary">
+            <h2>Submission Summary</h2>
+            <p><strong>Age:</strong> {{ user_data.age }}</p>
+            <p><strong>Gender:</strong> {{ user_data.gender }}</p>
+            <p><strong>Weight:</strong> {{ user_data.weight }} kg</p>
+            <p><strong>Height:</strong> {{ user_data.height }} meters</p>
+            <p><strong>Heart Rate:</strong> {{ user_data.heart_rate }} bpm</p>
+            <p><strong>Last Eaten:</strong> {{ user_data.last_eaten }}</p>
+            <button onclick="window.location.href='/details'">Repeat Form</button>
+        </div>
+    {% else %}
+        <!-- Render Form -->
+        <div class="form-container">
+            <h1>Health Questionnaire</h1>
+            <form method="POST" action="/details">
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" min="1" max="120" required>
                 </div>
-            </div>
-            
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="weight">Weight (kg):</label>
+                    <input type="number" id="weight" name="weight" min="20" max="200" required>
+                </div>
+                <div class="form-group">
+                    <label for="height">Height (cm):</label>
+                    <input type="number" step="0.01" id="height" name="height" min="100" max="250" required>
+                </div>
+                <div class="form-group">
+                    <label for="heart_rate">Heart Rate (bpm):</label>
+                    <input type="number" id="heart_rate" name="heart_rate" min="20" max="200" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_eaten">Last Eaten:</label>
+                    <div style="display: flex; justify-content: space-between;">
+                        <select id="last_eaten_hours" name="last_eaten_hours" required>
+                            {% for i in range(0, 9) %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                        <span>hours</span>
+                        <select id="last_eaten_minutes" name="last_eaten_minutes" required>
+                            <option value="0">00</option>
+                            <option value="0.25">15</option>
+                            <option value="0.5">30</option>
+                            <option value="0.75">45</option>
+                        </select>
+                        <span>minutes</span>
+                    </div>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    {% endif %}
 </body>
 </html>

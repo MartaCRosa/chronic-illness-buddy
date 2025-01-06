@@ -48,14 +48,14 @@ def chatbot():
 def details():
     if request.method == 'POST':
         # Get form data
-        age = int(request.form['age'])
+        age = float(request.form['age'])
         gender = request.form['gender']
         weight = float(request.form['weight'])
         height = float(request.form['height'])
-        heart_rate = int(request.form['heart_rate'])
+        heart_rate = float(request.form['heart_rate'])
 
         # Get hours and minutes from dropdown
-        last_eaten_hours = int(request.form['last_eaten_hours'])
+        last_eaten_hours = float(request.form['last_eaten_hours'])
         last_eaten_minutes = float(request.form['last_eaten_minutes'])
 
         # Calculate total last eaten time in hours
@@ -65,7 +65,7 @@ def details():
         errors = []
         
         # Check for valid age
-        if not (1 <= age <= 120):
+        if not (1 <= age <= 110):
             errors.append("Age must be between 1 and 120.")
         
         # Check for valid weight
@@ -91,9 +91,17 @@ def details():
         if errors:
             # If there are errors, render the form again with the error messages
             return render_template('details.html', errors=errors)
+
+        user_data = {
+            "age": age,
+            "gender": gender,
+            "weight": weight,
+            "height": height*0.0328084,
+            "heart_rate": heart_rate,
+            "last_eaten": last_eaten
+        }
         
-        # If no errors, handle the data (e.g., save it, process it, etc.)
-        return redirect(url_for('main.home'))  # Redirect to home after form submission
+        return render_template('details.html', user_data=user_data)
     
     # If it's a GET request, just render the form
     return render_template('details.html')

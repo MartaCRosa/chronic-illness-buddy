@@ -36,12 +36,12 @@ def classify_glucose(age, gender, weight, heartrate, height, last_eaten, diabeti
 # Example Usage
 if __name__ == "__main__":
     # Input example features
-    age = 22
+    age = 55
     gender = "F"
-    weight = 42
-    heartrate = 62
-    height = 5.3
-    last_eaten = 2
+    weight = 70
+    heartrate = 65
+    height = 5.4
+    last_eaten = 4
     diabetic = "Y"
     
     # Get prediction

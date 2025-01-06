@@ -2,6 +2,7 @@ from tensorflow.keras.models import Sequential # type: ignore
 from tensorflow.keras.layers import Dense, Dropout # type: ignore
 from tensorflow.keras.optimizers import Adam # type: ignore 
 
+# Fully Connected Feedforward Neural Network - hidden nodes reduction for abstract features
 def create_model(input_dim, output_dim):
     model = Sequential([
         Dense(128, activation='relu', input_dim=input_dim),
