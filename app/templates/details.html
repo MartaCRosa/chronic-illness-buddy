@@ -70,6 +70,12 @@
             <p><strong>Height:</strong> {{ user_data.height }} meters</p>
             <p><strong>Heart Rate:</strong> {{ user_data.heart_rate }} bpm</p>
             <p><strong>Last Eaten:</strong> {{ user_data.last_eaten }}</p>
+
+            <!-- Display Predicted Glucose Level -->       
+            {% if glucose_class %}
+                <h3>Predicted Glucose Level: {{ glucose_class }}</h3>
+            {% endif %}
+
             <button onclick="window.location.href='/details'">Repeat Form</button>
         </div>
     {% else %}

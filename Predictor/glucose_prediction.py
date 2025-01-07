@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from tensorflow.keras.models import load_model # type: ignore
 
 # Load Trained Model and Preprocessing Tools
@@ -31,6 +30,7 @@ def classify_glucose(age, gender, weight, heartrate, height, last_eaten, diabeti
     predicted_class = np.argmax(predictions, axis=1)[0]
     
     # Map to class label
+    print(label_encoder_classes[predicted_class])
     return label_encoder_classes[predicted_class]
 
 # Example Usage

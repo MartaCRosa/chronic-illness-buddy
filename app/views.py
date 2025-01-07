@@ -1,7 +1,8 @@
-from LLM.openai import generate_response
+from LLM.chatbot import generate_response
 from flask import Blueprint, render_template, request, redirect, url_for
 import os
 import json
+from Predictor.glucose_prediction import classify_glucose
 
 main = Blueprint('main', __name__)
 
@@ -91,17 +92,28 @@ def details():
         if errors:
             # If there are errors, render the form again with the error messages
             return render_template('details.html', errors=errors)
-
+    
+        # Render result
         user_data = {
             "age": age,
             "gender": gender,
             "weight": weight,
-            "height": height*0.0328084,
+            "height": height,
             "heart_rate": heart_rate,
             "last_eaten": last_eaten
         }
         
-        return render_template('details.html', user_data=user_data)
+        # Always set diabetic status to "Yes"
+        diabetic = "Y"
+
+        # Call prediction function
+        try:
+            glucose_class = classify_glucose(user_data['age'], user_data['gender'], user_data['weight'], user_data['heart_rate'], user_data['height']*0.032808, user_data['last_eaten'], diabetic)
+        except Exception as e:
+            errors.append(f"Error during prediction: {str(e)}")
+            return render_template('details.html', errors=errors)
+
+        return render_template('details.html', user_data=user_data, glucose_class=glucose_class)
     
     # If it's a GET request, just render the form
     return render_template('details.html')

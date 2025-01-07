@@ -1,6 +1,6 @@
 from openai import OpenAI
 
-client = OpenAI(api_key="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")
+client = OpenAI(api_key="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")
 
 # Initial context and memory setup
 context = "You are a helpful assistant giving medical advice. Your patient is diabetic. Answer concisely and clearly."
