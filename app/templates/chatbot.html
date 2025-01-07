@@ -3,39 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
-    <style>
-        .chat-container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-        .message {
-            margin: 10px 0;
-        }
-        .user-message {
-            text-align: right;
-            color: blue;
-        }
-        .bot-message {
-            text-align: left;
-            color: green;
-        }
-        textarea {
-            width: 100%;
-            height: 60px;
-        }
-    </style>
+    <title>Chatbot Buddy</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Google Fonts Option -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <nav>
-        <a href="/">Home</a>
-    </nav>
+<div class="body">
+    <div class="logo">
+        <a href="/">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo">
+        </a>
+    </div>        
+    <div class="title-container">
+        <div class="title-text">
+            What can I help you with?
+        </div>
+    </div>
     <div class="chat-container">
-        <h1>Chatbot</h1>
         <div id="chat-box">
             {% for msg in conversation %}
                 <div class="message {{ 'user-message' if msg.sender == 'User' else 'bot-message' }}">
@@ -44,12 +28,19 @@
             {% endfor %}
         </div>
         <form method="POST" action="/chatbot">
-            <textarea id="user_input" name="user_input" placeholder="Type your message here"></textarea><br><br>
-            <button type="submit">Send</button>
-        </form>
-        <form method="POST" action="/clear_chat" style="margin-top: 10px;">
-            <button type="submit">New Chat</button>
-        </form>
+            <button id="new-chat-button" onclick="startNewChat()">
+                <img src="{{ url_for('static', filename='images/trash.svg') }}" alt="Delete" style="width: 30px; height: 30px;">
+            </button>
+            <textarea id="user_input" name="user_input" placeholder="Message Chatbot Buddy"></textarea><br><br>
+            <button id="send-button" type="submit" style="border: none; background: none; padding: 0; cursor: pointer;">
+                <img src="{{ url_for('static', filename='images/send.svg') }}" alt="Send" style="width: 30px; height: 30px;">
+            </button>    
+        </form> 
+        <script>
+            function startNewChat() {
+                window.location.href = '/clear_chat'; // Adjust URL if needed
+            }
+        </script>
     </div>
-</body>
+</div>
 </html>

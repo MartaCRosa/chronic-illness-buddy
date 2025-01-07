@@ -119,8 +119,9 @@ def details():
     return render_template('details.html')
 
 
-@main.route('/clear_chat', methods=['POST'])
+@main.route('/clear_chat')
 def clear_chat():
+    print("clearing conversation")
     save_conversation([])  # Clear the conversation
     return redirect(url_for('main.chatbot'))
 

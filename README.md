@@ -10,10 +10,10 @@ Chronic Illness Buddy is a demo app designed to assist users in managing their h
 
 ## Features
 
-### Model Predictor
-The model predictor uses user-provided details to make health predictions. The required inputs include:  
+### Glucose Level Predictor
+The glucose level predictor uses user-provided details to predict and classify the state of the glucole level. The required inputs include:  
 - Age
--Gender  
+- Gender  
 - Weight
 - Height   
 - Heart Rate  
@@ -28,11 +28,11 @@ The AI chatbot connects to OpenAI's API to provide reliable, conversational resp
 - Get tips on improving daily health routines.
 
 ## Technologies
--Python
--Flask for the backend
--Machine Learning (Scikit-learn and TensorFlo) for the model predictor
--OpenAI API for the chatbot
--Docker for containerization
+- Python
+- Flask for the backend
+- Machine Learning (Scikit-learn and TensorFlo) for the model predictor
+- OpenAI API for the chatbot
+- Docker for containerization
 
 ## Installation
 

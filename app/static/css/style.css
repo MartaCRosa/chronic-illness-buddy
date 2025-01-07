@@ -5,10 +5,11 @@
 
 /* General reset */
 body {
+    font-family: 'Roboto', bold;
     margin: 0;
     padding: 0;
-    background-color: #333333; /* Dark background */
-    color: #f4f4f9; /* Light text */
+    background-color: #3B3939; /* Dark background */
+    color: #F6F9F1; /* Light text */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,6 +18,7 @@ body {
 
 /* Container for the logo and buttons */
 .container {
+    align-items: center;
     text-align: center;
     width: 100%;
     max-width: 600px;
@@ -25,12 +27,12 @@ body {
 /* Logo section */
 .logo {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 30px;
+    left: 30px;
 }
 
 .logo img {
-    width: 100px; /* Adjust the size of the logo */
+    width: 200px; /* Adjust the size of the logo */
     height: auto;
 }
 
@@ -45,8 +47,8 @@ body {
 
 /* Buttons */
 .btn {
-    color: #333333;
-    background-color: #f4f4f9; /* Light background for buttons */
+    color: #3B3939;
+    background-color: #F6F9F1; /* Light background for buttons */
     padding: 15px 30px;
     border-radius: 5px;
     font-family: 'Roboto', sans-serif;
@@ -70,4 +72,92 @@ body {
 a{
     text-decoration: none;
     color: inherit;
+}
+
+.title-container{
+    margin-bottom: 30px;
+}
+
+.title-text{
+    font-weight: bold; 
+    font-size: 30px;
+    text-align: center;
+}
+
+.chat-container{
+    background-color: #F6F9F1;
+    border-radius: 5px;
+    width: 730px;
+    height: 95px;
+}
+
+.chat-box{
+    align-items: left;
+}
+
+/* Message styles */
+.message {
+    margin-bottom: 10px; /* Add spacing between messages */
+}
+.user-message {
+    color: blue; /* Customize user message color */
+}
+.bot-message {
+    color: green; /* Customize bot message color */
+}
+
+form {
+    position: relative; /* Make the form a relative container */
+    width: 730px;
+    height: 100px;
+}
+
+/* Textarea styles */
+#user_input {
+    resize: none; /* Prevent resizing */
+    border: none; /* Remove border */
+    background-color: #F6F9F1;
+    padding: 20px; /* Add padding for better usability */
+    padding-right: 60px;
+    width: 100%; /* Full width */
+    height: 100px; /* Fixed height */
+    font-size: 14px; /* Font size for readability */
+    font-family: 'Roboto', bold;
+    box-sizing: border-box; /* Include padding and border in width/height */
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+#user_input:focus {
+    outline: none; /* Ensure no outline on focus */
+    background-color: #F6F9F1; /* Maintain same background color */
+}
+
+#send-button {
+    position: absolute; /* Position the button inside the textarea */
+    bottom: 5px; /* 10px padding from the bottom */
+    right: 10px; /* 10px padding from the left */
+    border: none; /* Remove border */
+    background: none; /* Remove background */
+    cursor: pointer; /* Pointer cursor for interactivity */
+    padding: 0; /* Remove padding */
+    align-items: right;
+}
+
+/* Send button image styles */
+#send-button img {
+    width: 24px; /* Set button image width */
+    height: 24px; /* Set button image height */
+}
+
+#new-chat-button {
+    position: absolute; /* Position the button inside the textarea */
+    bottom: 40px; /* 10px padding from the bottom */
+    right: 10px; /* 10px padding from the left */
+    border: none; /* Remove border */
+    background: none; /* Remove background */
+    cursor: pointer; /* Pointer cursor for interactivity */
+    padding: 0; /* Remove padding */
+    align-items: right;
 }
