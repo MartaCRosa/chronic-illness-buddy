@@ -3,23 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot Buddy</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-    <!-- Google Fonts Option -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Chatbot Buddy</title>
 </head>
+
 <div class="body">
+    <!-- SVG Logo -->
     <div class="logo">
         <a href="/">
             <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo">
         </a>
-    </div>        
+    </div>      
+
     <div id="title-container">
         <div class="title-text">
             What can I help you with?
         </div>
     </div>
+    <!-- Everything chat related -->
     <div class="chat-container">
+        <!-- Render the chat user and bot with different styles -->
         <div id="chat-box">
             <div id="messages-container">
                 {% for msg in conversation %}
@@ -29,19 +33,25 @@
                 {% endfor %}
             </div>
         </div>
+        
         <form method="POST" action="/chatbot">
+            <!-- Trash Button -->
             <button id="new-chat-button" onclick="startNewChat()">
-                <img src="{{ url_for('static', filename='images/trash.svg') }}" alt="Delete" style="width: 30px; height: 30px;">
+                <img src="{{ url_for('static', filename='images/trash.svg') }}" alt="Delete" style="width: 30px; height: 30px;"> 
             </button>
-            <textarea id="user_input" name="user_input" placeholder="Message Chatbot Buddy"></textarea><br><br>
+            <!-- Chatbot Interface -->
+            <textarea id="user_input" name="user_input" placeholder="Message Chatbot Buddy"></textarea>
+            <br><br>
+            <!-- Send Button -->
             <button id="send-button" type="submit" style="border: none; background: none; padding: 0; cursor: pointer;">
                 <img src="{{ url_for('static', filename='images/send.svg') }}" alt="Send" style="width: 30px; height: 30px;">
             </button>    
         </form> 
+
         <script>
             function startNewChat() {
-                fetch('/clear_chat', {
-                    method: 'GET', // Or 'POST' depending on your setup (use 'GET' here since the route accepts it).
+                fetch('/clear_chat', {  // From views.py
+                    method: 'GET',
                 })
                 .then(response => {
                     if (response.redirected) {
@@ -54,6 +64,8 @@
                 });
             }
         </script>
+
     </div>
+
 </div>
 </html>

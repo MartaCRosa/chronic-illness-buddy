@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-    <!-- Google Fonts Option -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Home</title>
 </head>
+
 <body>
     <div class="container">
         <!-- SVG Logo -->
         <div class="logo">
             <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo">
         </div>
-        <!-- Centered buttons -->
+
+        <!-- Buttons -->
         <div class="button-container">
             <a href="/details">
                 <div class="btn">
