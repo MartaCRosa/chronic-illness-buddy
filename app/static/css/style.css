@@ -74,7 +74,7 @@ a{
     color: inherit;
 }
 
-.title-container{
+#title-container{
     margin-bottom: 30px;
 }
 
@@ -85,25 +85,40 @@ a{
 }
 
 .chat-container{
-    background-color: #F6F9F1;
-    border-radius: 5px;
     width: 730px;
-    height: 95px;
 }
 
 .chat-box{
-    align-items: left;
+    background-color: none;
+}
+
+#messages-container{
+    overflow: hidden;
+    max-height: 700px; /* Limit the height to 750px */
+    overflow-y: auto; /* Add vertical scrolling when content exceeds the height */
+    padding-right: 10px;
+    padding-bottom: 10px;
+    box-sizing: border-box; /* Ensure padding doesn't affect the height */
 }
 
 /* Message styles */
 .message {
     margin-bottom: 10px; /* Add spacing between messages */
+    font-family: 'Roboto', bold;
+    color: #3B3939;
+    padding: 20px;
+    background-color: #F6F9F1;
+    border-radius: 5px;
+    width: 500px;
 }
-.user-message {
-    color: blue; /* Customize user message color */
+.message.user-message { 
+    text-align: right;
+    float: right;
 }
-.bot-message {
-    color: green; /* Customize bot message color */
+
+.message.bot-message {
+    text-align: left; 
+    float: left;
 }
 
 form {
@@ -160,4 +175,128 @@ form {
     cursor: pointer; /* Pointer cursor for interactivity */
     padding: 0; /* Remove padding */
     align-items: right;
+}
+
+/* Target the scrollbar itself */
+::-webkit-scrollbar {
+    width: 12px; /* Horizontal scrollbar width */
+    height: 12px; /* Vertical scrollbar height */
+  }
+  
+  /* Style the scrollbar track (the background) */
+  ::-webkit-scrollbar-track {
+    background: #F6F9F1; /* Light gray background */
+    border-radius: 10px;
+  }
+  
+  /* Style the scrollbar thumb (the draggable part) */
+  ::-webkit-scrollbar-thumb {
+    background: #919488; /* Darker gray thumb */
+    border-radius: 10px;
+  }
+  
+  /* Style the scrollbar thumb when hovered */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Even darker gray on hover */
+  }
+  
+.form-container{
+    display:flex;
+    width: 300px;
+}
+
+.form-group {
+    display: flex;
+    width: 300px;
+    margin-bottom: 10px;
+    font-family: 'Roboto', bold;
+    font-size: bold;
+}
+
+.form-label {
+    background-color: #919488; /* Matches the provided example */
+    color: #F6F9F1;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+.form-input {
+    border: none;
+    font-weight: bold;
+    flex-grow: 1;
+    border-radius: 5px;
+    background-color: #F6F9F1;
+    align-items: center; /* Align text vertically */
+    text-align: center; /* Align text horizontally */
+  }
+
+.form-last-eaten{
+    color:#3B3939;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding-inline: 5px;
+    font-weight: bold;
+}
+
+.last-eaten .form-input{
+    border: none;
+    font-weight: bold;
+    align-items: center; /* Align text vertically */
+    text-align: center; /* Align text horizontally */
+}
+
+.last_eaten_minutes .form-input{
+    border-radius: none;
+}
+
+.form-last-eaten-container{
+    display: flex;
+    background-color: #F6F9F1;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.form-submit{
+    border: none;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: #919488;
+    color:#F6F9F1;
+    align-items: center; /* Align text vertically */
+    text-align: center; /* Align text horizontally */
+    font-size: 20px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.form-submit:hover{
+    cursor: pointer;
+}
+
+.summary{
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    background-color:#919488;
+    border-radius: 5px;
+}
+
+.summary-button{
+    border: none;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: #3B3939;
+    color:#F6F9F1;
+    align-items: center; /* Align text vertically */
+    text-align: center; /* Align text horizontally */
+    font-size: 20px;
+    width: 100%;
+}
+
+.summary-button:hover{
+    cursor: pointer;
 }

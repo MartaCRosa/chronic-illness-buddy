@@ -14,18 +14,20 @@
             <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo">
         </a>
     </div>        
-    <div class="title-container">
+    <div id="title-container">
         <div class="title-text">
             What can I help you with?
         </div>
     </div>
     <div class="chat-container">
         <div id="chat-box">
-            {% for msg in conversation %}
-                <div class="message {{ 'user-message' if msg.sender == 'User' else 'bot-message' }}">
-                    <strong>{{ msg.sender }}:</strong> {{ msg.message }}
-                </div>
-            {% endfor %}
+            <div id="messages-container">
+                {% for msg in conversation %}
+                    <div class="message {{ 'user-message' if msg.sender == 'You' else 'bot-message' }}">
+                        <strong>{{ msg.sender }}:</strong> {{ msg.message }}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
         <form method="POST" action="/chatbot">
             <button id="new-chat-button" onclick="startNewChat()">
@@ -38,7 +40,18 @@
         </form> 
         <script>
             function startNewChat() {
-                window.location.href = '/clear_chat'; // Adjust URL if needed
+                fetch('/clear_chat', {
+                    method: 'GET', // Or 'POST' depending on your setup (use 'GET' here since the route accepts it).
+                })
+                .then(response => {
+                    if (response.redirected) {
+                        // Redirect to the returned URL
+                        window.location.href = response.url;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error clearing chat:', error);
+                });
             }
         </script>
     </div>

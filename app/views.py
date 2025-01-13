@@ -8,18 +8,19 @@ main = Blueprint('main', __name__)
 
 # File to store conversation
 CHAT_FILE = "conversation.json"
+MEDICATION_FILE = "medication.json"
 
-def load_conversation():
+def load_json(file_name):
     """Load the conversation from the file."""
-    if os.path.exists(CHAT_FILE):
-        with open(CHAT_FILE, "r") as file:
+    if os.path.exists(file_name):
+        with open(file_name, "r") as file:
             return json.load(file)
     return []
 
-def save_conversation(conversation):
+def save_json(text, file_name):
     """Save the conversation to the file."""
-    with open(CHAT_FILE, "w") as file:
-        json.dump(conversation, file)
+    with open(file_name, "w") as file:
+        json.dump(text, file)
 
 @main.route('/')
 def home():
@@ -31,18 +32,18 @@ def chatbot():
         user_input = request.form.get('user_input')
         if user_input:
             # Load existing conversation
-            conversation = load_conversation()
+            conversation = load_json(CHAT_FILE)
             # Add user input and bot response to the conversation
-            conversation.append({"sender": "User", "message": user_input})
+            conversation.append({"sender": "You", "message": user_input})
             response = generate_response(user_input)
-            conversation.append({"sender": "Chatbot buddy", "message": response})
+            conversation.append({"sender": "Chatbot Buddy", "message": response})
             # Save the updated conversation
-            save_conversation(conversation)
+            save_json(conversation, CHAT_FILE)
         # Redirect to the GET version of the page
         return redirect(url_for('main.chatbot'))
 
     # Handle GET request
-    conversation = load_conversation()
+    conversation = load_json(CHAT_FILE)
     return render_template('chatbot.html', conversation=conversation)
 
 @main.route('/details', methods=['GET', 'POST'])
@@ -122,8 +123,42 @@ def details():
 @main.route('/clear_chat')
 def clear_chat():
     print("clearing conversation")
-    save_conversation([])  # Clear the conversation
+    save_json([], CHAT_FILE)  # Clear the conversation
     return redirect(url_for('main.chatbot'))
 
 
+@main.route('/reminder', methods=['GET', 'POST'])
+def reminder():
+    if request.method == 'POST':
+        # Get form data
+        medication = request.form['medication']
+        medication_administration = request.form['medication-administration']
 
+        # Get hours and minutes from dropdown
+        hours = float(request.form['hours'])
+        minutes = float(request.form['minutes'])
+
+        # Validation logic (server-side)
+        errors = []
+    
+        if errors:
+            # If there are errors, render the form again with the error messages
+            return render_template('reminder.html', errors=errors)
+    
+        # Render result
+        medication_data = {
+            "medication": medication,
+            "medication_administration": medication_administration,
+            "hours": hours,
+            "minutes": minutes
+        }
+        
+        temp = load_json(MEDICATION_FILE)
+        if temp:
+            medication_data_new=[]
+            medication_data_new.extend([medication_data, temp])
+            save_json(medication_data_new, MEDICATION_FILE)
+        else:
+            save_json(medication_data, MEDICATION_FILE)    
+    # If it's a GET request, just render the form
+    return render_template('reminder.html')
