@@ -33,6 +33,7 @@ def classify_glucose(age, gender, weight, heartrate, height, last_eaten, diabeti
     print(label_encoder_classes[predicted_class])
     return label_encoder_classes[predicted_class]
 
+"""
 # Example Usage
 if __name__ == "__main__":
     # Input example features
@@ -47,3 +48,4 @@ if __name__ == "__main__":
     # Get prediction
     glucose_class = classify_glucose(age, gender, weight, heartrate, height, last_eaten, diabetic)
     print(f"Predicted Glucose Level: {glucose_class}")
+"""

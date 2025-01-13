@@ -69,7 +69,7 @@ y = label_encoder.fit_transform(y)
 
 # Train/Test/Validation Split
 X_temp, X_test, y_temp, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.2, random_state=42)
+X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.1, random_state=42)
 
 # Normalize the Data
 scaler = StandardScaler()
@@ -78,8 +78,8 @@ X_val = scaler.transform(X_val)
 X_test = scaler.transform(X_test)
 
 # Initialize and Train the Model
-input_dim = X_train.shape[1]
-output_dim = len(label_encoder.classes_)
+input_dim = X_train.shape[1]  # Number of feautures
+output_dim = len(label_encoder.classes_)  # The 3 classes
 model = create_model(input_dim=input_dim, output_dim=output_dim)
 
 y_train_cat = to_categorical(y_train, num_classes=output_dim)
@@ -92,12 +92,13 @@ early_stopping = EarlyStopping(
     patience=10,          # Stop after x epochs with no improvement
     restore_best_weights=True  # Revert to the best model weights
 )
+batch_size=256
 
 history = model.fit(
     X_train, y_train_cat,
     validation_data=(X_val, y_val_cat),
     epochs=400,
-    batch_size=128,
+    batch_size=batch_size,
     verbose=1,
     callbacks=[early_stopping]
 )
@@ -109,6 +110,7 @@ plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.title('Training and Validation Loss')
 plt.legend()
+plt.savefig(f'./Predictor/Trained_Model/plot-bs_{batch_size}_ttv_(90-10)-30.png')
 plt.show()
 
 results = model.evaluate(X_test, y_test_cat, verbose=0)
@@ -138,11 +140,12 @@ sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
 plt.title('Confusion Matrix')
 plt.ylabel('Actual Class')
 plt.xlabel('Predicted Class')
+plt.savefig(f'./Predictor/Trained_Model/cm-bs_{batch_size}_ttv_(90-10)-30.png')
 plt.show()
 
 # Save Model and Scaler
-model.save("Predictor\Model\glucose_model.h5")
-np.save("Predictor\Model\scaler.npy", scaler.mean_)
-np.save("Predictor\Model\scaler_std.npy", scaler.scale_)
-with open("Predictor\Model\label_encoder_classes.npy", "wb") as f:
+model.save("Predictor\Trained_Model\glucose_model.h5")
+np.save("Predictor\Trained_Model\scaler.npy", scaler.mean_)
+np.save("Predictor\Trained_Model\scaler_std.npy", scaler.scale_)
+with open("Predictor\Trained_Model\label_encoder_classes.npy", "wb") as f:
     np.save(f, label_encoder.classes_)
