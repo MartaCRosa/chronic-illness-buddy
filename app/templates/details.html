@@ -28,12 +28,13 @@
     {% endif %}
 
     {% if user_data %}
-        <!-- Show User's Submitted Data -->
+        <!-- Show user's submitted data -->
         <div class="summary">
-            <!-- Display Predicted Glucose Level -->       
+            <!-- Display predicted glucose level -->       
             {% if glucose_class %}
                 <h3>Predicted Glucose Level: {{ glucose_class }}</h3>
             {% endif %}
+            <!-- If it's an emergency -->
             {% if glucose_class != 'Normal' %}
                 <button class= "summary-button" style="margin-bottom: 10px;">Inform emergency contacts</button>
             {% endif %}

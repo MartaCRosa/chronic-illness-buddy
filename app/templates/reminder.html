@@ -26,13 +26,17 @@
             </ul>
         </div>
     {% endif %}
-    <!-- Render Form -->
+
+    <!-- Form -->
     <div class="form-container">
+
         <form method="POST" action="/reminder">
+            <!-- Name -->
             <div class="form-group">
                 <label class="form-label" for="medication">Medication</label>
                 <input class="form-input" type="text" id="medication" name="medication" required>
             </div>
+            <!-- Type -->
             <div class="form-group">
                 <label class="form-label" for="medication-administration">Medication Administration</label>
                 <select class="form-input" id="medication-administration" name="medication-administration" required>
@@ -42,6 +46,7 @@
                     <option value="other">Other</option>
                 </select>
             </div>
+            <!-- Time -->
             <div class="form-group last-eaten">
                 <label class="form-label" for="last_eaten">Time to administer</label>
                 <div class="form-last-eaten-container">
@@ -59,8 +64,10 @@
                     <span class="form-last-eaten">Minutes</span>
                 </div>
             </div>
+            <!-- Submit Button -->
             <button class= "form-submit" type="submit">Submit</button>
         </form>
     </div>
 </body>
+
 </html>
