@@ -30,7 +30,7 @@ The AI chatbot connects to OpenAI's API to provide reliable, conversational resp
 ## Technologies
 - Python
 - Flask for the backend
-- Machine Learning (Scikit-learn and TensorFlo) for the model predictor
+- Machine Learning (Scikit-learn and TensorFlow) for the model predictor
 - OpenAI API for the chatbot
 - Docker for containerization
 
