@@ -1,8 +1,8 @@
 from LLM.chatbot import generate_response
 from flask import Blueprint, render_template, request, redirect, url_for
+from Predictor.glucose_prediction import classify_glucose
 import os
 import json
-from Predictor.glucose_prediction import classify_glucose
 
 main = Blueprint('main', __name__)
 
@@ -10,22 +10,26 @@ main = Blueprint('main', __name__)
 CHAT_FILE = "conversation.json"
 MEDICATION_FILE = "medication.json"
 
+# Load the conversation from the file
 def load_json(file_name):
-    """Load the conversation from the file."""
     if os.path.exists(file_name):
         with open(file_name, "r") as file:
             return json.load(file)
     return []
 
+# Save the conversation to the file
 def save_json(text, file_name):
-    """Save the conversation to the file."""
     with open(file_name, "w") as file:
         json.dump(text, file)
 
+
+# Route to home page
 @main.route('/')
 def home():
     return render_template('index.html')
 
+
+# Route to chatbot page
 @main.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     if request.method == 'POST':
@@ -39,17 +43,26 @@ def chatbot():
             conversation.append({"sender": "Chatbot Buddy", "message": response})
             # Save the updated conversation
             save_json(conversation, CHAT_FILE)
-        # Redirect to the GET version of the page
+        # Redirect to the GET version of the page to get input
         return redirect(url_for('main.chatbot'))
 
     # Handle GET request
     conversation = load_json(CHAT_FILE)
     return render_template('chatbot.html', conversation=conversation)
 
+# Route to cleared chatbot page
+@main.route('/clear_chat')
+def clear_chat():
+    print("clearing conversation")
+    save_json([], CHAT_FILE)  # Clear the conversation
+    return redirect(url_for('main.chatbot'))
+
+
+# Route to details page
 @main.route('/details', methods=['GET', 'POST'])
 def details():
     if request.method == 'POST':
-        # Get form data
+        # Get data from form 
         age = float(request.form['age'])
         gender = request.form['gender']
         weight = float(request.form['weight'])
@@ -64,31 +77,26 @@ def details():
         last_eaten = last_eaten_hours + last_eaten_minutes
 
         # Validation logic (server-side)
-        errors = []
+        errors = []      
         
-        # Check for valid age
-        if not (1 <= age <= 110):
-            errors.append("Age must be between 1 and 120.")
-        
-        # Check for valid weight
+        if not (15 <= age <= 110):
+            errors.append("Age must be between 15 and 120.")  # Check for valid age
+             
         if not (20 <= weight <= 200):
-            errors.append("Weight must be between 20kg and 200kg.")
-        
-        # Check for valid height
+            errors.append("Weight must be between 20kg and 200kg.")  # Check for valid weight
+              
         if not (100 <= height <= 250):
-            errors.append("Height must be between 1m and 2.5m.")
-        
-        # Check for valid heart rate
-        if not (20 <= heart_rate <= 200):
-            errors.append("Heart rate must be between 20bpm and 200bpm.")
+            errors.append("Height must be between 1m and 2.5m.")  # Check for valid height
+           
+        if not (10 <= heart_rate <= 200):
+            errors.append("Heart rate must be between 10bpm and 200bpm.")  # Check for valid heart rate
         
         # Handle 'last eaten' time logic
         if last_eaten > 8:
             last_eaten = -1  # Default to -1 if more than 8 hours
-
-        # Check if last_eaten is in the valid range
+      
         if not (0 <= last_eaten <= 8 or last_eaten == -1):
-            errors.append("Last eaten time must be between 0 and 8 hours. If above 8, default to -1.")
+            errors.append("Last eaten time must be between 0 and 8 hours. Fasting is -1.") # Check if last_eaten is in the valid range (If above 8 default to -1)
 
         if errors:
             # If there are errors, render the form again with the error messages
@@ -103,9 +111,7 @@ def details():
             "heart_rate": heart_rate,
             "last_eaten": last_eaten
         }
-        
-        # Always set diabetic status to "Yes"
-        diabetic = "Y"
+        diabetic = "Y"  # Always set diabetic status to "Yes"
 
         # Call prediction function
         try:
@@ -116,21 +122,15 @@ def details():
 
         return render_template('details.html', user_data=user_data, glucose_class=glucose_class)
     
-    # If it's a GET request, just render the form
+    # If it's a GET request, just render the form (client hasn't inserted data)
     return render_template('details.html')
 
 
-@main.route('/clear_chat')
-def clear_chat():
-    print("clearing conversation")
-    save_json([], CHAT_FILE)  # Clear the conversation
-    return redirect(url_for('main.chatbot'))
-
-
+# Route to reminder page
 @main.route('/reminder', methods=['GET', 'POST'])
 def reminder():
     if request.method == 'POST':
-        # Get form data
+        # Get name and type from form
         medication = request.form['medication']
         medication_administration = request.form['medication-administration']
 
@@ -139,8 +139,7 @@ def reminder():
         minutes = float(request.form['minutes'])
 
         # Validation logic (server-side)
-        errors = []
-    
+        errors = []    
         if errors:
             # If there are errors, render the form again with the error messages
             return render_template('reminder.html', errors=errors)
@@ -159,6 +158,7 @@ def reminder():
             medication_data_new.extend([medication_data, temp])
             save_json(medication_data_new, MEDICATION_FILE)
         else:
-            save_json(medication_data, MEDICATION_FILE)    
-    # If it's a GET request, just render the form
+            save_json(medication_data, MEDICATION_FILE)  
+
+    # If it's a GET request, just render the form (client hasn't inserted data)
     return render_template('reminder.html')
