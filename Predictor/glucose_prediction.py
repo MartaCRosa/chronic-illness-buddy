@@ -2,10 +2,10 @@ import numpy as np
 from tensorflow.keras.models import load_model # type: ignore
 
 # Load Trained Model and Preprocessing Tools
-model = load_model("Predictor\Trained_Model\glucose_model.h5")
-scaler_mean = np.load("Predictor\Trained_Model\scaler.npy")
-scaler_std = np.load("Predictor\Trained_Model\scaler_std.npy")
-label_encoder_classes = np.load("Predictor\Trained_Model\label_encoder_classes.npy", allow_pickle=True)
+model = load_model("Predictor/Trained_Model/glucose_model.h5")
+scaler_mean = np.load("Predictor/Trained_Model/scaler.npy")
+scaler_std = np.load("Predictor/Trained_Model/scaler_std.npy")
+label_encoder_classes = np.load("Predictor/Trained_Model/label_encoder_classes.npy", allow_pickle=True)
 
 # Feature Preprocessing Function
 def preprocess_features(age, gender, weight, heartrate, height, last_eaten, diabetic):
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     gender = "F"
     weight = 70
     heartrate = 65
-    height = 5.4
+    height = 5.4 # 164cm
     last_eaten = 4
     diabetic = "Y"
     

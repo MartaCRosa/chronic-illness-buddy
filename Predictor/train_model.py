@@ -13,7 +13,7 @@ from model import create_model
 data = pd.read_csv("Predictor/Glucose_Level_Estimation.csv")
 
 def preprocess_data(df):
-    df = df.drop(columns=['NIR_Reading', 'HR_IR', 'SKIN_COLOR'])  # Remove columns with feautures that isn't data a patient could easily give
+    df = df.drop(columns=['NIR_Reading', 'HR_IR', 'SKIN_COLOR'])  # Remove columns with feautures that isn't data a patient could easily give - Fairness from unawareness
     df = df.dropna(subset=['WEIGHT', 'HEIGHT', 'DIABETIC'])  #Drop rows with missing features
     df['HEARTRATE'] = df['HEARTRATE'].fillna(df['HEARTRATE'].median())  # Use median of values missing
     return df
