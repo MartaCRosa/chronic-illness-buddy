@@ -1,7 +1,7 @@
 # Chronic Illness Buddy
 
 Chronic Illness Buddy is a demo app designed to assist users in managing their health, for now, only for the illness of diabetes. It provides three main features:  
-- A **Glucose Level Predictor** that estimates potential hypoglicemc or hyperglicemic states based on user inputs.  
+- A **Glucose Level Predictor** that estimates potential hypoglycemc or hyperglycemic states based on user inputs.  
 - A **Medication Manager** that notifies the user of medication timing.
 - An **AI Chatbot** powered by OpenAI's API to answer health-related questions.
 
